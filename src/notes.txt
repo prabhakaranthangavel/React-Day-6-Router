@@ -1,0 +1,411 @@
+Content
+
+1.using react-router-dom
+
+2.BrowserRouter & Router & Route & Link & useParams
+
+*************************************************************************************************************************
+
+React ல் சாதாரணமாக அல்லது Normal ஆக ஒரு navigation ஐ உருவாக்க
+
+App.jsx:
+import React, {useState} from 'react';
+import Home from './components/Home';
+import Notes from './components/Notes';
+import Users from './components/Users';
+
+
+function App() {
+
+
+// Creating a state to store the current page
+const [page, setPage] = useState("Home");
+
+const toPage = (page) => (event) => {
+  event.preventDefault();
+  setPage(page);
+}
+
+const content = () => {
+  if(page === "Home") {
+    return <Home />
+  } 
+  else if(page === "Notes") {
+    return <Notes />
+}
+else if(page === "Users") {
+  return <Users />
+}
+}
+
+// Object to add padding style to the element
+  const padding = {
+    padding: 5,
+  }
+
+  return (
+      <div>
+        <div>
+        <a href='#' style={padding} onClick={toPage ("Home")}  >Home</a>
+        <a href='#' style={padding} onClick={toPage ("Notes")} >Notes</a>
+        <a href='#' style={padding} onClick={toPage ("Users")} >Users</a>
+      </div>
+
+{/* Render the content of the component for the current set page */}
+{content ()}
+
+      </div>
+  )
+}
+
+export default App;
+
+
+
+Home.jsx:
+import React from 'react'
+
+function Home() {
+  return (
+    <div>
+        <p>Home</p>
+    </div>
+  )
+}
+
+export default Home
+
+
+
+Notes.jsx:
+import React from 'react'
+
+function Notes() {
+  return (
+    <div>
+         <p>Notes</p>
+    </div>
+  )
+}
+
+export default Notes
+
+
+
+Users.jsx:
+import React from 'react'
+
+function Users() {
+  return (
+    <div>
+         <p>Users</p>
+    </div>
+  )
+}
+
+export default Users
+
+
+output:
+Kindly console the output
+Home  Notes  Users      என்ற navigation bar உருவாகும்.
+எதை click செய்கிறோமோ அதை காட்டும்.
+
+                ****************************************************
+
+Create the same navigation bar using react-router-dom
+இதே navigation bar ஐ react-router-dom ஐ பயன்படுத்தி உருவாக்க  
+
+
+===>அதற்கு முதலில் react-router-dom ஐ செய்ய வேண்டும்.
+    npm install react-router-dom
+
+===>எந்த component நமக்கு parent component ஆக உள்ளதோ அதற்கு கீழே Router ஐ create செய்ய வேண்டும்.
+    எந்த program ல் நமக்கு parent component ஆனது App.jsx ஆகும்.
+
+===>பிறகு Routes ஐ create செய்ய வேண்டும்.
+    element மற்றும் path ஐ set செய்ய பயன்படுகிறது.
+    இதன் மூலம் Browsing History ன் முன் மற்றும் பின் செயல்களை நாம் அறிந்து கொள்ளலாம்.
+
+===>Example :
+import React from 'react';
+import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import Notes from './components/Notes';
+import Users from './components/Users';
+
+
+function App() {
+
+  const padding = {
+    padding: 5,
+  }
+
+  return (
+    <Router>
+      <div>
+        <Link to='/' style={padding}>Home</Link>
+        <Link to='/notes' style={padding}>Notes</Link>
+        <Link to='/users' style={padding}>Users</Link>
+      </div>
+
+      <Routes>
+        <Route path='/'      element={<Home  />} />
+        <Route path='/notes' element={<Notes />} />
+        <Route path='/users' element={<Users />} /> 
+      </Routes>
+
+      <div>
+        <i id='footer'>@Note App</i>
+      </div>
+    </Router>
+
+  )
+}
+
+export default App;
+
+
+
+output:
+Kindly console the output
+Home  Notes  Users      என்ற navigation bar உருவாகும்.
+எதை click செய்கிறோமோ அதை காட்டும்.
+அதனுடன் Browsing History ன் முன் மற்றும் பின் செயல்களை நாம் அறிந்து கொள்ளலாம்.
+
+                ****************************************************
+
+How to handle URL params
+URL params ஐ எவ்வாறு கையாளுவது
+
+import React from 'react';
+import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import Notes from './components/Notes';
+import Users from './components/Users';
+import Note from './components/Note';
+
+
+function App( {notes} ) {
+
+  const padding = {
+    padding: 5,
+  }
+
+  return (
+    <Router>
+      <div>
+        <Link to='/' style={padding}>Home</Link>
+        <Link to='/notes' style={padding}>Notes</Link>
+        <Link to='/users' style={padding}>Users</Link>
+      </div>
+
+      <Routes>
+        <Route path='/'      element={<Home  />} />
+        <Route path='/notes' element={<Notes notes = {notes}/>} />
+        <Route path='/users' element={<Users />} /> 
+        <Route path='/notes/:noteid' element={<Note notes={ notes } /> } />
+      </Routes>
+
+      <div>
+        <i id='footer'>@Your's Prabhakaran</i>
+      </div>
+    </Router>
+
+  )
+}
+
+export default App;
+
+
+
+The steps Given Below:
+
+(1)App.jsx => rfce
+
+(2)App.jsx => npm install react-router-dom
+
+(3)App.jsx => Removed the div tag App 
+
+(4)App.jsx => Create a Router => Router + Press Enter = "import the Router"
+
+(5)App.jsx => import the Router =>Renamed for "BrowserRouter as Router"
+
+(6)App.jsx => Create the navigation bar
+           => <Link என்று கொடுத்தவுடன் Link ஆனது import ஆகிவிடும்.
+
+           => <Router>
+              <div>
+                <Link to="/home" > ஸ்கிரீனில் நேவிகேஷன் பார் வந்துவிடும் </Link>
+                <Link to="/notes" > Notes </Link>
+                <Link to="/users" > Users </Link>
+              </div>
+              </Router> 
+
+            =>இவ்வாறு கொடுத்தவுடன் screen ல் navigation bar(Home Notes Users) வந்துவிடும்.
+              அதனுடன் path address ம் வந்துவிடும்.
+            
+            
+(7)App.jsx => Styling the navigation bar
+
+           =>function App() {
+
+             const padding = {
+             padding: 5,
+             }
+
+             return (
+             <Router>
+              <div>
+                <Link to="/home"  style={padding} >Home</Link>
+                <Link to="/notes" style={padding} >Notes</Link>
+                <Link to="/users" style={padding} >Users</Link>
+              </div>
+              </Router>
+              )
+              }
+
+           =>இவ்வாறு கொடுத்தவுடன் styling apply ஆகிவிடும்.
+
+
+(8)App.jsx => Set the Routes
+           => <Routes என்று கொடுத்தவுடன் Routes ஆனது import ஆகிவிடும்.
+
+
+           =><Routes>
+                <Route path='/home' element = {<Home />} />
+                <Route path='/notes' element = {<Notes />} />
+                <Route path='/users' element = {<Users/>} />
+             </Routes>
+
+           =>Routes ஐ set செய்த உடன் ( 9 + 10 + 11 )
+
+           =>இவ்வாறு கொடுத்தவுடன் screen ல் navigation bar(Home Notes Users) ஐ click செய்யும்போது அதனுடைய அந்த component உடைய view தெரியும்.
+             எடுத்துக்காட்டாக Home ஐ click செய்யும்போது Home என்று கீழே அது வந்துவிடும்.
+             அதனுடன் path address & browser history ம் வந்துவிடும்.
+             Kindly console the output.
+
+
+(9)component  => {<Home/>} it is a component.
+
+              => So created the Home.jsx File.
+
+              => Home.jsx ல்ல்ல்
+
+              => import React from 'react'
+               function Home() {
+                return (
+                    <div>Home</div>
+                    )
+                    }
+                export default Home
+
+
+(10)Notes.jsx => {<Notes />} it is a component. {<Users />} it is a component. 
+    Users.jsx
+              => So created the Notes.jsx File. So created the Users.jsx File.
+
+              => the same steps following.
+
+
+(11)App.jsx =>import செய்ய வேண்டும்.
+
+            =>import Home from './components/Home' 
+              import Notes from './components/Notes' 
+              import Users from './components/Users' 
+
+
+(12)App.jsx => Create the footer
+
+            =><i id='footer'>@Note Application</i>
+
+****Handling URL params****
+
+(13)main.jsx => Given the Array of List Data & give the component
+
+             => const notes = [
+                {
+                  id: 1,
+                  content: 'Ind vs Pak',
+                  important: true
+                },   
+                
+                etc......,
+             ]
+
+             ****render(<App notes = {notes}/>)****
+
+(14)Home.jsx => 
+
+              <div>
+                  <h1>Notes Application</h1>
+              </div>
+
+
+(15)App.jsx => Notes என்ற component ஐ click செய்யும் போது content ஆனது view ஆக வேண்டும்.
+                 
+               அதற்கு முதலில் props ஐ pass செய்ய வேண்டும்.
+                 function App( {notes} )
+                 <Route path='/notes' element = {<Notes notes = {notes} />} />
+    
+    Notes.jsx => function Notes( {notes} )
+
+               
+               function Notes( {notes} ) {
+                return (
+                  <div>
+                    <h2>Notes</h2>
+                    <ul>
+                    {
+javascript            notes.map (note => 
+javascript            <li key = {note.id}> {note.content} </li>)
+                    }
+                    </ul>
+                    </div>
+                )
+               }
+
+               =>Home என்ற component ஐ click செய்யும் போது "Notes Application"என்று view ஆகும்.
+               அதே போல் Notes என்ற component ஐ click செய்யும் போது main.jsx ல் உள்ள Array List ல் "content" ல் எது கொடுத்துள்ளமோ அது view ஆகும்.
+
+
+(16)App.jsx => Route ஐ define செய்ய வேண்டும் ஏனென்றால் /1 /2 /3 என்று கொடுக்கும்போது குறிப்பிட்ட content மட்டும் view ஆக வேண்டும்.
+               அதற்காக பயன்படுவதுதான் "useparams" என்ற hook ஆகும்.
+               அது id ஐ பொறுத்து work ஆகும்.அதற்காகத்தான் "noteid" என்று குறிப்பிடுகிறோம்.
+
+            => <Route path='/notes/: noteid' element = {<Note notes = {notes}/>} />
+
+            => Note என்ற component ஐ create செய்து App.jsx ல் import செய்ய வேண்டும்.
+
+  Note.jsx  => 
+
+            import React from 'react'
+            import { useParams } from 'react-router-dom'
+
+            function Note( {notes} ) {
+            const id = useParams() . noteid;
+            const note = notes.find ( n => n.id === Number (id));
+
+            return (
+              <div>
+                <h2> {note.content} </h2>
+              </div>
+            )
+            }
+
+            export default Note
+
+            => /1 /2 /3 என்று கொடுக்கும்போது குறிப்பிட்ட content மட்டும் view ஆகும்.
+               Kindly console the output.
+
+
+(17)Notes.jsx => Link ஆக மாறுவதற்கு <Link ஐ பின்வருமாறு பயன்படுத்தவும்.
+
+             => <Link to = {`/notes/${note.id}`}
+
+             =>{
+               notes.map (note =>
+                  <li key={note.id} > <Link to = {`/notes/${note.id}`} > {note.content} </Link></li>)
+               }
+
+*************************************************************************************************************************
